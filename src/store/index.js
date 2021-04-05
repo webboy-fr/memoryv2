@@ -13,7 +13,7 @@ export let store = new Vuex.Store({
 
 
     state: {
-        // server: process.env.VUE_APP_SERVER, //TODO Utiliser ENV
+        server: process.env.VUE_APP_SERVER,
         gameId: 0,
         game: [],
         selectedCards: [],
@@ -111,10 +111,11 @@ export let store = new Vuex.Store({
     actions: {
 
         newGame(context) {
+            console.log(context.state.server)
             context.commit('setGame', [])
             context.commit('cleanTimerInterval')
             context.commit('setTimer', 0)
-            get(`http://memoryv2back.local/home/newGame/${context.state.selectedLevel}`)
+            get(`${context.state.server}home/newGame/${context.state.selectedLevel}`)
                 .then((json) => {
                     context.commit('setGameId', json.id)
                     context.commit('setGame', json.grid)
@@ -132,7 +133,7 @@ export let store = new Vuex.Store({
         },
 
         checkEven(context) {
-            post('http://memoryv2back.local/home/checkEven', {
+            post(`${context.state.server}home/checkEven`, {
                 gameId: context.state.gameId,
                 selectedCards: context.state.selectedCards
             }).then((data) => {
@@ -143,7 +144,7 @@ export let store = new Vuex.Store({
         },
 
         saveScore(context) {            
-            post('http://memoryv2back.local/home/save', {
+            post(`${context.state.server}/home/save`, {
                 gameId: context.state.gameId,
                 player: context.state.player,
                 time: context.state.timer
@@ -151,7 +152,7 @@ export let store = new Vuex.Store({
         },
 
         getScores(context, level) {            
-            get(`http://memoryv2back.local/home/scores/${level}`)
+            get(`${context.state.server}home/scores/${level}`)
                 .then((json) => {  
                     //Pas jojo, revoir mapping gestion des niveaux de difficulté (db ?)
                     if(level == 0){                        

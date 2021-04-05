@@ -1,6 +1,7 @@
 <template>
     <div>
       <h2>Meilleurs scores</h2>
+      <p>N'affiche que les 5 meilleurs résultats par niveau de difficulté</p>
       <div class="row">
         <div class="col">
           <h3>Facile</h3>
