@@ -1,0 +1,67 @@
+<template>
+  <div>
+    Diificulté : <select v-model="selectedLevel" :disabled="game.length > 0">
+      <option v-for="(level, index) in levelList" :key="index" :value="index">
+        {{ level }}
+      </option>
+    </select>    
+    <br />
+    Temps ecoulé : {{ timer }} secondes
+    <br />
+    <button @click="newGame()">Nouvelle partie</button>
+    <div v-if="victory" id="recordScore">
+      <h1>Bravo ! Vous avez gagné !</h1>
+      <input type="text" name="player" v-model="player" />
+      <button @click="save()">Enregistrer</button>
+    </div>
+    <Grid />
+  </div>
+</template>
+
+<script>
+import Grid from "@/components/Grid.vue";
+import { mapState, mapGetters, mapActions } from "vuex";
+
+export default {
+  name: "Play",
+  components: {
+    Grid,
+  },
+  computed: {
+    ...mapState(["levelList", "game", "timer"]),
+    ...mapGetters(["victory"]),
+
+    selectedLevel: {
+      get() {
+        return this.$store.state.selectedLevel;
+      },
+      set(value) {
+        this.$store.commit("setSelectedLevel", value);
+      },
+    },
+    player: {
+      get() {
+        return this.$store.state.player;
+      },
+      set(value) {
+        this.$store.commit("setPlayer", value);
+      },
+    },
+  },
+  methods: {
+    ...mapActions(["newGame", "saveScore"]),
+    save() {
+      this.saveScore().then(() => {
+        this.$store.commit("setGame", []);
+        this.$store.commit("setTimer", 0);
+        this.$router.push({
+          name: "Scores",
+        });
+      });
+    },
+  },
+};
+</script>
+
+<style lang="scss">
+</style>
