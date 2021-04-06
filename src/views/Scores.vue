@@ -49,6 +49,11 @@
 <script>
 import { mapState, mapActions } from 'vuex'
 
+/*
+TODO : 
+- les scores ne se mettent pas a jour correctement quand on arrive automatiquement ur la page meilleur score
+*/
+
 export default {
   name: 'Scores', 
   computed:{
@@ -56,12 +61,12 @@ export default {
   },
   methods:{
     ...mapActions(['getScores'])
-  },
+  }/*,
   created: function(){
     this.getScores(0)
     this.getScores(1)
     this.getScores(2)
-  }
+  }*/
 }
 </script>
 
