@@ -13,8 +13,7 @@ export let store = new Vuex.Store({
 
 
     state: {
-        server: process.env.VUE_APP_SERVER,
-        //server: 'http://localhost:8080/',
+        server: process.env.VUE_APP_SERVER,        
         gameId: 0,
         game: [],
         selectedCards: [],
@@ -85,6 +84,13 @@ export let store = new Vuex.Store({
             if (state.game.length > 0) {
                 return state.game.every((card) => card.visible === true)
             }
+        },
+
+        routeNewGame: state => {
+            return `${state.server}home/newGame/${state.selectedLevel}`
+        },
+        routeCheckEven: state => {
+            return `${state.server}home/checkEven`
         }
 
         // //Construction url + params de base //TODO Modules
@@ -111,12 +117,11 @@ export let store = new Vuex.Store({
 
     actions: {
 
-        newGame(context) {
-            console.log(context.state.server)
+        newGame(context) {            
             context.commit('setGame', [])
             context.commit('cleanTimerInterval')
             context.commit('setTimer', 0)
-            get(`${context.state.server}home/newGame/${context.state.selectedLevel}`)
+            get(context.getters.routeNewGame)
                 .then((json) => {
                     context.commit('setGameId', json.id)
                     context.commit('setGame', json.grid)
@@ -134,7 +139,7 @@ export let store = new Vuex.Store({
         },
 
         checkEven(context) {
-            post(`${context.state.server}home/checkEven`, {
+            post(context.getters.routeCheckEven, {
                 gameId: context.state.gameId,
                 selectedCards: context.state.selectedCards
             }).then((data) => {

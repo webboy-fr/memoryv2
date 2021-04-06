@@ -7,9 +7,8 @@ export async function get(route) {
   
   export async function post(route, payload) {
     let response = await fetch(route, {
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
+      headers: {        
+        'Content-Type': 'application/json'        
       },
       method: 'POST',
       body: JSON.stringify(payload)
