@@ -1,5 +1,6 @@
 <template>
   <div>
+    {{server}}
     Diificulté : <select v-model="selectedLevel" :disabled="game.length > 0">
       <option v-for="(level, index) in levelList" :key="index" :value="index">
         {{ level }}
@@ -28,7 +29,7 @@ export default {
     Grid,
   },
   computed: {
-    ...mapState(["levelList", "game", "timer"]),
+    ...mapState(["levelList", "game", "timer", "server"]),
     ...mapGetters(["victory"]),
 
     selectedLevel: {

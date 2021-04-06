@@ -19,14 +19,18 @@ const routes = [{
       store.commit('setTimer', 0)
       next()
     },
-    
-    
     component: () => import('@/views/Play.vue')
     
   },
   {
     path: '/scores',
     name: 'Scores',
+    beforeEnter: (to, from, next) => {
+      store.dispatch('getScores', 0)
+      store.dispatch('getScores', 1)
+      store.dispatch('getScores', 2)
+      next()
+    },
     component: () =>
       import('@/views/Scores.vue')
   }

@@ -14,6 +14,7 @@ export let store = new Vuex.Store({
 
     state: {
         server: process.env.VUE_APP_SERVER,
+        //server: 'http://localhost:8080/',
         gameId: 0,
         game: [],
         selectedCards: [],
