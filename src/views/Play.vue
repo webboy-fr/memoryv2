@@ -1,6 +1,5 @@
 <template>
-  <div>
-    {{server}}
+  <div>    
     Diificulté : <select v-model="selectedLevel" :disabled="game.length > 0">
       <option v-for="(level, index) in levelList" :key="index" :value="index">
         {{ level }}
