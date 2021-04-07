@@ -2,7 +2,8 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import {
     get,
-    post
+    post,
+    put
 } from "@/mixins/fetchers.js"
 
 
@@ -13,7 +14,7 @@ export let store = new Vuex.Store({
 
 
     state: {
-        server: process.env.VUE_APP_SERVER,        
+        server: process.env.VUE_APP_SERVER,
         gameId: 0,
         game: [],
         selectedCards: [],
@@ -22,10 +23,8 @@ export let store = new Vuex.Store({
         timer: 0,
         timerInterval: {},
         player: '',
-        returningCard:false,
-        scoreEasy: [],
-        scoreMedium: [],
-        scoreHard: []
+        returningCard: false,
+        scores: []
     },
 
 
@@ -54,7 +53,7 @@ export let store = new Vuex.Store({
         setTimerInterval(state, status) {
             state.timerInterval = status
         },
-        cleanTimerInterval(state){
+        cleanTimerInterval(state) {
             clearInterval(state.timerInterval)
         },
         setPlayer(state, status) {
@@ -63,14 +62,8 @@ export let store = new Vuex.Store({
         setReturningCard(state, status) {
             state.returningCard = status
         },
-        setScoreEasy(state, status) {
-            state.scoreEasy = status
-        },
-        setScoreMedium(state, status) {
-            state.scoreMedium = status
-        },
-        setScoreHard(state, status) {
-            state.scoreHard = status
+        setScores(state, status) {
+            state.scores = status
         }
 
     },
@@ -87,28 +80,20 @@ export let store = new Vuex.Store({
         },
 
         routeNewGame: state => {
-            return `${state.server}home/newGame/${state.selectedLevel}`
+            return `${state.server}game/create/${state.selectedLevel}`
         },
         routeCheckEven: state => {
-            return `${state.server}home/checkEven`
+            return `${state.server}game/checkCardEven`
+        },
+        routeSave: state => {
+            return `${state.server}game/${state.gameId}`
+        },
+        routeScores: state => {
+            return `${context.state.server}game/scores`
         }
 
-        // //Construction url + params de base //TODO Modules
-        // basePath: state => {
-        //   return state.server + state.version + '/'
-        // },
-        // apiKeyParam: state => {
-        //   return `api_key=${state.appId}`
-        // },
-        // sessionIdParam: state => {
-        //   return `session_id=${state.sessionId}`
-        // },
 
-        // //Routes TODO MODULES
-        // tokenURL: (state, getters) => {
-        //   return `${getters.basePath}authentication/token/new?${getters.apiKeyParam}`
-        // },
-
+        
 
     },
 
@@ -117,15 +102,16 @@ export let store = new Vuex.Store({
 
     actions: {
 
-        newGame(context) {            
+        newGame(context) {
             context.commit('setGame', [])
             context.commit('cleanTimerInterval')
             context.commit('setTimer', 0)
+            context.commit('setPlayer', '')
             get(context.getters.routeNewGame)
                 .then((json) => {
                     context.commit('setGameId', json.id)
                     context.commit('setGame', json.grid)
-                    let timerInterval = setInterval(() => {                        
+                    let timerInterval = setInterval(() => {
                         let timer = context.state.timer + 1
                         context.commit('setTimer', timer)
                     }, 1000)
@@ -133,9 +119,9 @@ export let store = new Vuex.Store({
                 });
         },
 
-        selectCard(context, card) {            
+        selectCard(context, card) {
             context.dispatch('checkEven')
-            context.commit('cleanSelectedCards', card)            
+            context.commit('cleanSelectedCards', card)
         },
 
         checkEven(context) {
@@ -149,26 +135,23 @@ export let store = new Vuex.Store({
             })
         },
 
-        saveScore(context) {            
-            post(`${context.state.server}/home/save`, {
-                gameId: context.state.gameId,
+        saveScore(context) {
+            put(context.getters.routeSave, {                
                 player: context.state.player,
                 time: context.state.timer
+            }).then((data) => {                
+                if(data.status == 200){
+                    console.log('ok update');                    
+                } else {
+                    console.error('PROBLEME UPDATE')
+                }
             })
         },
 
-        getScores(context, level) {            
-            get(`${context.state.server}home/scores/${level}`)
-                .then((json) => {  
-                    //Pas jojo, revoir mapping gestion des niveaux de difficulté (db ?)
-                    if(level == 0){                        
-                        context.commit('setScoreEasy', json)
-                    } else if(level == 1){                        
-                        context.commit('setScoreMedium', json)
-                    } else if(level == 2){                        
-                        context.commit('setScoreHard', json)
-                    }
-                    
+        getScores(context) {            
+            get(context.getters.routeScores)
+                .then((json) => {
+                    context.commit('setScores', json)
                 });
         },
 

@@ -26,9 +26,7 @@ const routes = [{
     path: '/scores',
     name: 'Scores',
     beforeEnter: (to, from, next) => {
-      store.dispatch('getScores', 0)
-      store.dispatch('getScores', 1)
-      store.dispatch('getScores', 2)
+      store.dispatch('getScores')      
       next()
     },
     component: () =>
