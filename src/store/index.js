@@ -89,7 +89,7 @@ export let store = new Vuex.Store({
             return `${state.server}game/${state.gameId}`
         },
         routeScores: state => {
-            return `${context.state.server}game/scores`
+            return `${state.server}game/scores`
         }
 
 
