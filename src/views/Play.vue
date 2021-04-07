@@ -11,7 +11,7 @@
     <button @click="newGame()">Nouvelle partie</button>
     <div v-if="victory" id="recordScore">
       <h1>Bravo ! Vous avez gagné !</h1>
-      <input type="text" name="player" v-model="player" />
+      <input type="text" name="player" v-model="player" @keyup.enter="save()" :autofocus="'autofocus'" />
       <button @click="save()">Enregistrer</button>
     </div>
     <Grid />
@@ -54,6 +54,8 @@ export default {
       this.saveScore().then(() => {
         this.$store.commit("setGame", []);
         this.$store.commit("setTimer", 0);
+        this.$store.dispatch('getScores');
+        //TODO : this.$store.commit("setTimer", 0); setPlayer
         this.$router.push({
           name: "Scores",
         });

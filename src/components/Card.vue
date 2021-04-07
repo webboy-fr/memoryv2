@@ -38,11 +38,10 @@ export default {
       
       if (this.selectedCards.length == 2) {
         this.checkEven();
-        if(this.victory){
-          console.log('victory');          
+        if(this.victory){          
           this.$store.commit('cleanTimerInterval')
         } else {
-          console.log('PAS ENCORE');
+          console.log('pas encore gagné... :P');
         }
       } else {
         this.$store.commit('setReturningCard', false);

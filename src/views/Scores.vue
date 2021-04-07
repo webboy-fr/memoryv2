@@ -10,7 +10,7 @@
               <th>Joueur</th>
               <th>Temps</th>
             </tr>
-            <tr v-for="(score, index) in scoreEasy" :key="index">
+            <tr v-for="(score, index) in scores[0]" :key="index">
               <td>{{score.player}}</td>
               <td>{{score.time}}</td>
             </tr>
@@ -23,7 +23,7 @@
               <th>Joueur</th>
               <th>Temps</th>
             </tr>
-            <tr v-for="(score, index) in scoreMedium" :key="index">
+            <tr v-for="(score, index) in scores[1]" :key="index">
               <td>{{score.player}}</td>
               <td>{{score.time}}</td>
             </tr>
@@ -36,7 +36,7 @@
               <th>Joueur</th>
               <th>Temps</th>
             </tr>
-            <tr v-for="(score, index) in scoreHard" :key="index">
+            <tr v-for="(score, index) in scores[2]" :key="index">
               <td>{{score.player}}</td>
               <td>{{score.time}}</td>
             </tr>
@@ -57,7 +57,7 @@ TODO :
 export default {
   name: 'Scores', 
   computed:{
-    ...mapState(['scoreEasy', 'scoreMedium', 'scoreHard'])
+    ...mapState(['scores'])
   },
   methods:{
     ...mapActions(['getScores'])
