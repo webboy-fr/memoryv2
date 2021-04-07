@@ -3,7 +3,8 @@ import Vuex from 'vuex'
 import {
     get,
     post,
-    put
+    put, 
+    remove
 } from "@/mixins/fetchers.js"
 
 
@@ -90,6 +91,9 @@ export let store = new Vuex.Store({
         },
         routeScores: state => {
             return `${state.server}game/scores`
+        },
+        routeDelete: state => {
+            return `${state.server}game/${state.gameId}`
         }
 
 
@@ -153,6 +157,17 @@ export let store = new Vuex.Store({
                 .then((json) => {
                     context.commit('setScores', json)
                 });
+        },
+
+        deleteGame(context) {
+            remove(context.getters.routeDelete)
+            .then((data) => {                
+                if(data.status == 200){
+                    console.log('ok update');                    
+                } else {
+                    console.error('PROBLEME UPDATE')
+                }
+            })
         },
 
 

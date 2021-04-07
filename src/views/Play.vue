@@ -13,6 +13,8 @@
       <h1>Bravo ! Vous avez gagné !</h1>
       <input type="text" name="player" v-model="player" @keyup.enter="save()" :autofocus="'autofocus'" />
       <button @click="save()">Enregistrer</button>
+      <br>
+      <a @click="deleteScore()">Quitter sans enregister</a>
     </div>
     <Grid />
   </div>
@@ -49,7 +51,7 @@ export default {
     },
   },
   methods: {
-    ...mapActions(["newGame", "saveScore"]),
+    ...mapActions(["newGame", "saveScore", "deleteGame"]),
     save() {
       this.saveScore().then(() => {
         this.$store.commit("setGame", []);
@@ -61,6 +63,17 @@ export default {
         });
       });
     },
+    deleteScore(){
+       this.deleteGame().then(() => {
+        this.$store.commit("setGame", []);
+        this.$store.commit("setTimer", 0);
+        //this.$store.dispatch('getScores');
+        //TODO : this.$store.commit("setTimer", 0); setPlayer
+        this.$router.push({
+          name: "Home",
+        });
+      });
+    }
   },
 };
 </script>

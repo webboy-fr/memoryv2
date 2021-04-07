@@ -28,3 +28,15 @@ export async function put(route, payload) {
   let data = await response.json()
   return data
 }
+
+export async function remove(route, payload) {
+  let response = await fetch(route, {
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    method: 'DELETE',
+    body: JSON.stringify(payload)
+  })
+  let data = await response.json()
+  return data
+}
