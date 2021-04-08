@@ -1,5 +1,6 @@
+<!-- Page gérant l'affichage des scores -->
 <template>
-    <div>
+    <div class="container">
       <h2>Meilleurs scores</h2>
       <p>N'affiche que les 5 meilleurs résultats par niveau de difficulté</p>
       <div class="row">
@@ -10,7 +11,7 @@
               <th>Joueur</th>
               <th>Temps</th>
             </tr>
-            <tr v-for="(score, index) in scores[0]" :key="index">
+            <tr v-for="(score, index) in scores[0]" :key="index"> <!-- On boucle sur l'index 0 du tableau scores (facile)-->
               <td>{{score.player}}</td>
               <td>{{score.time}}</td>
             </tr>
@@ -23,7 +24,7 @@
               <th>Joueur</th>
               <th>Temps</th>
             </tr>
-            <tr v-for="(score, index) in scores[1]" :key="index">
+            <tr v-for="(score, index) in scores[1]" :key="index"> <!-- On boucle sur l'index 1 du tableau scores (moyen) -->
               <td>{{score.player}}</td>
               <td>{{score.time}}</td>
             </tr>
@@ -36,7 +37,7 @@
               <th>Joueur</th>
               <th>Temps</th>
             </tr>
-            <tr v-for="(score, index) in scores[2]" :key="index">
+            <tr v-for="(score, index) in scores[2]" :key="index"> <!-- On boucle sur l'index 2 du tableau scores (difficile) -->
               <td>{{score.player}}</td>
               <td>{{score.time}}</td>
             </tr>
@@ -49,10 +50,6 @@
 <script>
 import { mapState, mapActions } from 'vuex'
 
-/*
-TODO : 
-- les scores ne se mettent pas a jour correctement quand on arrive automatiquement ur la page meilleur score
-*/
 
 export default {
   name: 'Scores', 
@@ -61,12 +58,7 @@ export default {
   },
   methods:{
     ...mapActions(['getScores'])
-  }/*,
-  created: function(){
-    this.getScores(0)
-    this.getScores(1)
-    this.getScores(2)
-  }*/
+  }
 }
 </script>
 

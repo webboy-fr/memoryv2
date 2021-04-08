@@ -1,3 +1,9 @@
+/*
+Ce mixin stocke toutes les fonctions de fetch avec les différentes méthodes HTTP utilisées
+Cela évite d'avoir à les déclarer dans un endroit non approprié
+Utilise les async/await pour pas enchainer les .then() et faire un callback hell
+*/
+
 export async function get(route) {
   let response = await fetch(route);
   let data = await response.json()

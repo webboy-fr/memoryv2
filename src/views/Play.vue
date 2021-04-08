@@ -1,17 +1,17 @@
 <template>
   <div>    
-    Diificulté : <select v-model="selectedLevel" :disabled="game.length > 0">
-      <option v-for="(level, index) in levelList" :key="index" :value="index">
-        {{ level }}
+    Diificulté : <select v-model="selectedLevel" :disabled="game.length > 0"> <!-- v-model et disabled : bind avec un state-->
+      <option v-for="(level, index) in levelList" :key="index" :value="index"> <!--Boucle sur les niveau de difficulté pour le select -->
+        {{ level }} <!-- Interpolation mousatche -->
       </option>
     </select>    
     <br />
-    Temps ecoulé : {{ timer }} secondes
+    Temps ecoulé : {{ timer }} secondes <!-- Interpolation mousatche -->
     <br />
-    <button @click="newGame()">Nouvelle partie</button>
-    <div v-if="victory" id="recordScore">
+    <button @click="newGame()">Nouvelle partie</button> <!-- event click déclenche action store newGame -->
+    <div v-if="victory" id="recordScore"> <!-- Div pour enregistrer score -->
       <h1>Bravo ! Vous avez gagné !</h1>
-      <input type="text" name="player" v-model="player" @keyup.enter="save()" :autofocus="'autofocus'" />
+      <input type="text" name="player" v-model="player" @keyup.enter="save()" :autofocus="'autofocus'" /> <!-- autofocus + écoute touche Enter. UX -->
       <button @click="save()">Enregistrer</button>
       <br>
       <a @click="deleteScore()">Quitter sans enregister</a>
@@ -21,19 +21,19 @@
 </template>
 
 <script>
-import Grid from "@/components/Grid.vue";
-import { mapState, mapGetters, mapActions } from "vuex";
+import Grid from "@/components/Grid.vue"; //importe le composant Grid (la grille)
+import { mapState, mapGetters, mapActions } from "vuex"; //permet de mapper plus facilement le store dans le composant
 
 export default {
   name: "Play",
   components: {
-    Grid,
+    Grid, //Composant requi dans cette vue
   },
   computed: {
-    ...mapState(["levelList", "game", "timer", "server"]),
-    ...mapGetters(["victory"]),
+    ...mapState(["levelList", "game", "timer", "server"]), //mapping des state du store
+    ...mapGetters(["victory"]),//mapping des méthodes du store (getters)
 
-    selectedLevel: {
+    selectedLevel: { //Computed avec comportement particulier get/set
       get() {
         return this.$store.state.selectedLevel;
       },
