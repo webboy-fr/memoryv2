@@ -5,7 +5,6 @@ import App from '@/App.vue'
 
 
 Vue.use(Vuex)
-//Vue.use(VueRouter)
 
 
 Vue.config.productionTip = false
